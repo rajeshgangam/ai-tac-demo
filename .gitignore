@@ -1,0 +1,7 @@
+# the proprietary binaries live in a SEPARATE PRIVATE repo, pulled by setup.sh
+.fluxdbg-bin/
+# demo build artifacts
+demos/redis/redis/
+demos/**/*.bin
+demos/**/hits*.jsonl
+demos/**/*.log

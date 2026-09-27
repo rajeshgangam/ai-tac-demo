@@ -1,0 +1,14 @@
+{
+  "service": "redis",
+  "name": "srandmember_overflow",
+  "probes": [
+    {
+      "kind": "entry",
+      "func": "addReplyArrayLen",
+      "id": "reply_array_len",
+      "captures": [
+        { "name": "length", "reg": "arg1", "signed": 1 }
+      ]
+    }
+  ]
+}

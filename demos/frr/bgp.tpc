@@ -1,0 +1,8 @@
+{
+  "service": "bgpd",
+  "name": "bgp_update_path",
+  "probes": [
+    { "kind": "entry", "func": "bgp_update_receive", "id": "update_receive",
+      "captures": [ { "name": "peer", "reg": "arg0" }, { "name": "size", "reg": "arg1" } ] }
+  ]
+}
