@@ -13,7 +13,9 @@ demos/frr/frr-down.sh             # tear down
 
 ## What you'll see
 `bgp_update_receive` captured on the live router as ns1 flaps 172.16.1.0/24 —
-`{"conn":...,"size":...}` per UPDATE, with the router never restarted.
+`{"conn":...,"size":...}` per UPDATE, then **AI-TAC narrates** what the live router did (decodes the UPDATE sizes, spots End-of-RIB, etc.) — router never restarted.
+
+`./demos/frr/frr-trace.sh openai` uses another provider; `./demos/frr/frr-trace.sh none` skips the AI beat.
 
 ## Source-level demo (the workbench)
 The FRR source is at `/root/frr` (matches the binary's DWARF). Browse functions
