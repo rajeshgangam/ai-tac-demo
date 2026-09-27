@@ -23,13 +23,27 @@ You need read access to the private `ai-tac-demo-bin` repo (ask the owner for an
 | Demo | What it shows |
 |---|---|
 | **demos/redis** | A real CVE. One command crashes Redis; `fr trace` captures the overflow value (`LONG_MIN`) on the live server a heartbeat before the abort; the AI's fix is byte-identical to the maintainers'. |
-| **demos/frr** | Same loop against a live `bgpd` router — the BGP UPDATE path, no restart. |
+| **demos/frr** | Live-trace a running FRR `bgpd` router (real zebra+bgpd eBGP) — attach, capture the BGP UPDATE path, no restart. Fully runnable in the VM appliance. |
 | **findings/** | Honest write-ups of each investigation, incl. one ticket that *does not reproduce* on current dev (a real triage outcome, not a staged win). |
 
 ## The AI skill
 `skills/fr-trace/SKILL.md` is the full loop for an AI agent: pick a function,
 generate/compile a `.tpc` probe spec, attach with guardrails, capture, remove.
 Load it into Claude and point it at a process — it drives `fr` end to end.
+
+## Autonomous mode (AI-TAC) + model choice
+Beyond the manual loop, the AI can drive the whole thing itself — capture,
+diagnose, patch, rebuild, verify, retrying until the crash is gone:
+```bash
+demos/redis/ai-fix.sh                 # default provider (Abacus.AI)
+demos/redis/ai-fix.sh openai          # or any provider below (needs its key in env)
+.fluxdbg-bin/tools/ai-tac models      # list providers/models + which have a key
+```
+Any OpenAI-compatible model works — `abacus` (default), `openai`, `openrouter`,
+`groq`, `together`, or a local `ollama`. Select with `--provider` / `--model`;
+the key comes from `--api-key`, then `$<PROVIDER>_API_KEY`, then a baked default.
+The autonomous loop calls a cloud model, so it needs internet; the capture/trace
+itself is fully offline.
 
 ## Two traps that fail *silently* (attach still says "success")
 1. **Build-ID must match** — a `.tpc` is compiled against one exact build; `fr`
